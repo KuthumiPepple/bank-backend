@@ -65,7 +65,7 @@ type listAccountsRequest struct {
 	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
 }
 
-func (server *Server) ListAccounts(c *gin.Context) {
+func (server *Server) listAccounts(c *gin.Context) {
 	var req listAccountsRequest
 	if err := c.ShouldBindQuery(&req); err != nil {
 		c.JSON(http.StatusBadRequest, errorResponse(err))
