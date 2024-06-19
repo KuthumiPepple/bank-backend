@@ -23,10 +23,10 @@ func (server *Server) createTransfer(c *gin.Context) {
 		return
 	}
 
-	if !server.doesCurrencyMatch(c, req.FromAccountID, req.Currency) {
+	if !server.validAccount(c, req.FromAccountID, req.Currency) {
 		return
 	}
-	if !server.doesCurrencyMatch(c, req.ToAccountID, req.Currency) {
+	if !server.validAccount(c, req.ToAccountID, req.Currency) {
 		return
 	}
 
@@ -45,7 +45,7 @@ func (server *Server) createTransfer(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-func (server *Server) doesCurrencyMatch(c *gin.Context, accountID int64, currency string) bool {
+func (server *Server) validAccount(c *gin.Context, accountID int64, currency string) bool {
 	account, err := server.store.GetAccount(c, accountID)
 	if err != nil {
 		if err == sql.ErrNoRows {
