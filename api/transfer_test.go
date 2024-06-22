@@ -15,7 +15,7 @@ import (
 	"go.uber.org/mock/gomock"
 )
 
-func TestCreateTransferAPI(t *testing.T) {
+func TestTransferAPI(t *testing.T) {
 	account1 := randomAccount()
 	account2 := randomAccount()
 
