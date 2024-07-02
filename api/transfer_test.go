@@ -282,7 +282,7 @@ func TestTransferAPI(t *testing.T) {
 			require.NoError(t, err)
 
 			recorder := httptest.NewRecorder()
-			server := NewServer(store)
+			server := newTestServer(t, store)
 
 			server.router.ServeHTTP(recorder, request)
 
