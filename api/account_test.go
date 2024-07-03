@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	mockdb "github.com/kuthumipepple/bank-backend/db/mock"
@@ -96,6 +97,15 @@ func TestGetAccountAPI(t *testing.T) {
 			url := fmt.Sprintf("/accounts/%d", tc.accountID)
 			request, err := http.NewRequest(http.MethodGet, url, nil)
 			require.NoError(t, err)
+
+			addAuthorization(
+				t,
+				request,
+				server.tokenMaker,
+				authorizationTypeBearer,
+				account.Owner,
+				time.Minute,
+			)
 
 			server.router.ServeHTTP(recorder, request)
 
@@ -204,6 +214,15 @@ func TestCreateAccountAPI(t *testing.T) {
 			request, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(data))
 			require.NoError(t, err)
 
+			addAuthorization(
+				t,
+				request,
+				server.tokenMaker,
+				authorizationTypeBearer,
+				account.Owner,
+				time.Minute,
+			)
+
 			server.router.ServeHTTP(recorder, request)
 			tc.checkResponse(recorder)
 		})
@@ -216,6 +235,8 @@ func TestListAccountsAPI(t *testing.T) {
 	for i := 0; i < n; i++ {
 		accounts[i] = randomAccount()
 	}
+
+	lastAccount := accounts[len(accounts)-1]
 
 	type Query struct {
 		pageID   int
@@ -317,6 +338,15 @@ func TestListAccountsAPI(t *testing.T) {
 			recorder := httptest.NewRecorder()
 
 			server := newTestServer(t, store)
+
+			addAuthorization(
+				t,
+				request,
+				server.tokenMaker,
+				authorizationTypeBearer,
+				lastAccount.Owner,
+				time.Minute,
+			)
 
 			server.router.ServeHTTP(recorder, request)
 			tc.checkResponse(recorder)

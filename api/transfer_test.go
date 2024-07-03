@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	mockdb "github.com/kuthumipepple/bank-backend/db/mock"
@@ -283,6 +284,15 @@ func TestTransferAPI(t *testing.T) {
 
 			recorder := httptest.NewRecorder()
 			server := newTestServer(t, store)
+
+			addAuthorization(
+				t,
+				request,
+				server.tokenMaker,
+				authorizationTypeBearer,
+				account1.Owner,
+				time.Minute,
+			)
 
 			server.router.ServeHTTP(recorder, request)
 
