@@ -22,7 +22,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::774298947197:role/deployment
+          role-to-assume: arn:aws:iam::767398076546:role/deployment
           aws-region: us-east-1
 
       - name: Login to Amazon ECR
