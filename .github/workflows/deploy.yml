@@ -42,7 +42,8 @@ jobs:
       - name: Build, tag, and push docker image to Amazon ECR
         uses: docker/build-push-action@v6
         with:
-          context: "."
-          platforms: "linux/amd64,linux/arm64"
+          context: .
+          platforms: linux/arm64
           push: true
           tags: ${{ steps.login-ecr.outputs.registry }}/bank:${{ github.sha }}
+          provenance: false
